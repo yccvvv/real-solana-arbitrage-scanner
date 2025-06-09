@@ -1,0 +1,41 @@
+{
+  "name": "real-solana-arbitrage-scanner",
+  "version": "1.0.0",
+  "description": "Production-ready Solana arbitrage scanner with real WebSocket connections to Solana mainnet",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean"
+  },
+  "keywords": [
+    "solana",
+    "arbitrage",
+    "websocket",
+    "defi",
+    "trading",
+    "real-time",
+    "blockchain"
+  ],
+  "author": "Real Arbitrage Scanner",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/web3.js": "^1.95.2",
+    "ws": "^8.18.0",
+    "decimal.js": "^10.4.3",
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.5.3",
+    "ts-node": "^10.9.2",
+    "rimraf": "^5.0.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 
