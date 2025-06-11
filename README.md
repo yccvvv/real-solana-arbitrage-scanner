@@ -1,139 +1,214 @@
-# Real Solana Arbitrage Scanner
+# Solana Arbitrage Scanner
 
-🚀 **Production-ready arbitrage scanner with real WebSocket connections to Solana mainnet**
+A real-time arbitrage opportunity detection system for Solana DEXs, built with TypeScript and designed for production trading environments.
 
-## ✅ Real Implementation Features
+## Overview
 
-- **Real Solana WebSocket connections** to `wss://api.mainnet-beta.solana.com`
-- **Real-time pool monitoring** using Solana RPC `accountSubscribe`
-- **Cross-DEX arbitrage detection** between Raydium, Orca, Phoenix, and more
-- **Live account state changes** from actual Solana pools
-- **No simulations** - only real blockchain data
+This system monitors liquidity pools across multiple Solana DEXs to identify arbitrage opportunities in real-time. It implements sophisticated price aggregation, risk assessment, and execution probability calculations to provide actionable trading signals.
 
-## 🎯 Verified Working Components
+## Architecture
 
-✅ **Real WebSocket Connection**: Connects to actual Solana mainnet  
-✅ **Real Pool Subscriptions**: Monitors real pool account changes  
-✅ **Live Data Feed**: Receives actual pool state updates  
-✅ **Cross-Source Validation**: Prevents false arbitrage opportunities  
-✅ **Cost Calculation**: Includes slippage, fees, gas costs  
+### Core Components
 
-## 🚀 Quick Start
+1. **Direct DEX Clients** - Native parsers for pool data from major Solana DEXs
+2. **Price Aggregators** - Cross-DEX price consolidation with oracle validation  
+3. **On-Chain Monitoring** - WebSocket-based real-time pool state tracking
+4. **Arbitrage Scanner** - Opportunity detection with cost-benefit analysis
 
-```bash
-# Install dependencies
-npm install
+### Supported DEXs
 
-# Build the project
-npm run build
+- **Raydium** - AMM and concentrated liquidity pools
+- **Orca** - Whirlpool and standard AMM pools  
+- **Phoenix** - Order book markets
+- **Meteora** - Dynamic liquidity management pools
 
-# Run the scanner
-npm start
+### Oracle Integration
 
-# Or run in development mode
-npm run dev
-```
+- **Pyth Network** - Real-time price feeds with confidence intervals
+- **Switchboard** - Decentralized oracle aggregation
 
-## 📋 Configuration
-
-The scanner monitors these real pools by default:
-
-### Raydium Pools
-- `58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2` - SOL/USDC
-- `7qhGhsVMdLMGaIzGPZEFwFZHNTRF1J1QyG9V3tpKQE3Z` - SOL/USDT  
-- `8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj` - RAY/USDC
-
-### Orca Pools
-- `EGZ7tiLeH62TPV1gL8WwbXGzEPa9zmcpVnnkPKKnrE2U` - SOL/USDC Whirlpool
-- `9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP` - SOL/USDT Whirlpool
-- `H8Zs9rYbfKo5gqDGNpHLZCmhBDf3v7K8jPSz9K3mG8nW` - ORCA/USDC Whirlpool
-
-## 🔧 Real-Time Output
-
-```
-🚀 Starting Real Solana Arbitrage Scanner...
-═══════════════════════════════════════════════════════════
-🔗 Connecting to Solana RPC WebSocket: wss://api.mainnet-beta.solana.com
-✅ Connected to Solana RPC WebSocket
-✅ Arbitrage scanner connected to Solana WebSocket
-📡 Subscribing to pool account: 58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2 (Raydium)
-✅ Subscription confirmed for pool: 58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2
-📊 Real-time account update for Raydium pool: 58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2
-📡 Real pool update: [Raydium] Price: 85.42156789 | Liquidity: 48567234.32
-💰 ARBITRAGE FOUND: 58oQChx4y.../EGZ7tiLe...
-   Buy: Raydium @ 85.42156789
-   Sell: Orca @ 85.89234567
-   Profit: 0.5483%
-   Net Profit: $234.56
-   Confidence: 87.3%
-```
-
-## 📊 Architecture
-
-```
-src/
-├── websocket/
-│   └── SolanaWebSocketClient.ts    # Real Solana RPC WebSocket client
-├── scanner/
-│   └── ArbitrageScanner.ts         # Main arbitrage detection engine
-├── types/
-│   └── index.ts                    # TypeScript interfaces
-├── config/
-│   └── index.ts                    # Configuration settings
-└── index.ts                        # Main entry point
-```
-
-## 🌐 Real Endpoints
-
-- **Solana RPC**: `wss://api.mainnet-beta.solana.com`
-- **Network**: Solana Mainnet
-- **Commitment**: `confirmed`
-- **Pool Monitoring**: Real account subscriptions
-
-## ⚠️ Important Notes
-
-- This scanner connects to **real Solana mainnet**
-- Uses **actual pool account monitoring**
-- Requires **stable internet connection**
-- Pool updates depend on **real trading activity**
-- No simulated data or test networks
-
-## 🔧 Development
+## Installation
 
 ```bash
-# Install dependencies
 npm install
-
-# Run in development mode with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Clean build files
-npm run clean
 ```
 
-## 📈 Real-Time Monitoring
+### Dependencies
 
-The scanner provides real-time status updates:
+Key production dependencies:
+- `@solana/web3.js` - Solana blockchain interaction
+- `@pythnetwork/client` - Pyth oracle integration
+- `@switchboard-xyz/solana.js` - Switchboard oracle access
+- `decimal.js` - Precision arithmetic for financial calculations
+- `ws` - WebSocket client for real-time data
 
-- **Connection Status**: WebSocket connection health
-- **Pool Subscriptions**: Number of monitored pools
-- **Price Cache**: Current price data count
-- **Arbitrage Opportunities**: Live opportunity detection
+## Configuration
 
-## 🚀 Production Ready
+Configure the scanner via environment variables or the config object:
 
-This implementation is production-ready with:
+```typescript
+const config = {
+  solanaEndpoints: {
+    rpc: 'https://api.mainnet-beta.solana.com',
+    websocket: 'wss://api.mainnet-beta.solana.com'
+  },
+  pools: {
+    Raydium: ['58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2'],
+    Orca: ['EGZ7tiLeH62TPV1gL8WwbXGzEPa9zmcpVnnkPKKnrE2U']
+  },
+  scanning: {
+    updateInterval: 2000,
+    minProfitThreshold: 0.5, // 0.5%
+    maxSlippage: 0.05,
+    commitment: 'confirmed'
+  }
+};
+```
 
-- ✅ Real blockchain connections
-- ✅ Error handling and reconnection
-- ✅ Graceful shutdown handling
-- ✅ TypeScript type safety
-- ✅ Modular architecture
-- ✅ Zero simulations or mock data
+## Usage
 
----
+### Basic Arbitrage Scanning
 
-**⚡ Real arbitrage scanning on Solana mainnet - no simulations, only real opportunities!** 
+```typescript
+import { ArbitrageScanner } from './src/scanner/ArbitrageScanner';
+
+const scanner = new ArbitrageScanner(config);
+
+scanner.on('arbitrageOpportunity', (opportunity) => {
+  console.log(`Arbitrage opportunity: ${opportunity.profitPercentage.toFixed(2)}% profit`);
+  console.log(`Buy: ${opportunity.buyDex} @ ${opportunity.buyPrice}`);
+  console.log(`Sell: ${opportunity.sellDex} @ ${opportunity.sellPrice}`);
+});
+
+await scanner.start();
+```
+
+### Price Monitoring
+
+```typescript
+import { PoolParserFactory } from './src/monitoring/parsers/PoolParserFactory';
+
+const factory = new PoolParserFactory(connection);
+const poolData = await factory.parsePoolData(poolAddress, accountInfo, 'Raydium');
+const currentPrice = factory.getCurrentPrice(poolData);
+```
+
+## Testing
+
+The project includes comprehensive integration tests that use real blockchain data:
+
+```bash
+# Run basic integration test
+npx ts-node basic-integration-test.ts
+
+# Run specific component tests
+npx ts-node src/tests/integration-dex-clients.test.ts
+npx ts-node src/tests/integration-price-aggregators.test.ts
+npx ts-node src/tests/integration-onchain-monitoring.test.ts
+
+# Run all integration tests
+npx ts-node run-integration-tests.ts
+```
+
+All tests connect to Solana mainnet and validate functionality with live data.
+
+## Key Features
+
+### Arbitrage Detection
+
+- **Cross-DEX Price Analysis** - Identifies price discrepancies between exchanges
+- **Cost Calculation** - Accounts for gas fees, slippage, and protocol fees
+- **Execution Probability** - Estimates likelihood of successful trade execution
+- **Risk Assessment** - Evaluates liquidity depth and market conditions
+
+### Price Aggregation
+
+- **Weighted Averaging** - Combines DEX prices weighted by liquidity
+- **Oracle Validation** - Cross-references with Pyth and Switchboard feeds
+- **Confidence Scoring** - Provides reliability metrics for price data
+- **Stale Data Detection** - Filters out outdated price information
+
+### Real-Time Monitoring
+
+- **WebSocket Integration** - Live account change notifications
+- **Pool State Tracking** - Continuous monitoring of liquidity pool updates
+- **Event-Driven Architecture** - Efficient processing of blockchain events
+
+## Current Limitations
+
+### Known Issues
+
+1. **SDK Dependencies** - Some DEX SDKs have breaking changes that require manual parsing fallbacks
+2. **Rate Limiting** - Public RPC endpoints may throttle high-frequency requests
+3. **Oracle Latency** - Price feed updates may lag behind DEX state changes
+4. **Gas Estimation** - Current implementation uses simplified gas calculations
+
+### Areas for Improvement
+
+1. **MEV Protection** - Implementation of frontrunning protection mechanisms
+2. **Advanced Routing** - Multi-hop arbitrage path optimization
+3. **Portfolio Management** - Position sizing and capital allocation strategies
+4. **Risk Management** - Dynamic position limits and stop-loss mechanisms
+
+### Performance Considerations
+
+- **Memory Usage** - Price cache grows unbounded in current implementation
+- **WebSocket Stability** - No automatic reconnection logic for dropped connections
+- **Error Handling** - Limited retry mechanisms for failed blockchain calls
+
+## Production Readiness
+
+### Ready for Production
+
+- Basic arbitrage detection logic
+- Real-time price monitoring
+- Oracle price validation
+- Cost calculation framework
+
+### Requires Development
+
+- MEV protection strategies
+- Advanced execution logic
+- Comprehensive error handling
+- Performance optimization
+- Monitoring and alerting
+
+## API Reference
+
+### ArbitrageScanner
+
+```typescript
+class ArbitrageScanner extends EventEmitter {
+  constructor(config: ScannerConfig)
+  async start(): Promise<void>
+  async stop(): Promise<void>
+  getStatus(): ScannerStatus
+}
+```
+
+### PoolParserFactory
+
+```typescript
+class PoolParserFactory {
+  constructor(connection: Connection)
+  async parsePoolData(address: string, accountInfo: AccountInfo<Buffer>, dex: string): Promise<PoolLiquidity | null>
+  getCurrentPrice(poolData: PoolLiquidity): Decimal
+}
+```
+
+## Contributing
+
+When contributing to this project:
+
+1. Ensure all tests pass with real blockchain data
+2. Add comprehensive error handling for new features
+3. Document any new configuration options
+4. Consider gas costs and execution feasibility for trading logic
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Disclaimer
+
+This software is for educational and research purposes. Trading cryptocurrencies involves substantial risk of loss. Users are responsible for their own trading decisions and should conduct thorough testing before using in production environments. 

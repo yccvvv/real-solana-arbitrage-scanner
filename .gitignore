@@ -3,22 +3,44 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
-# Build output
+# Build outputs
 dist/
+dist-test/
 build/
 *.tsbuildinfo
+*.js.map
 
-# Environment files
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Runtime files
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
 *.log
-logs/
+
+# Runtime data
+pids
 *.pid
 *.seed
 *.pid.lock
@@ -30,12 +52,20 @@ coverage/
 # nyc test coverage
 .nyc_output
 
-# Dependency directories
-node_modules/
-jspm_packages/
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettierignore
+
+# TypeScript cache
+*.tsbuildinfo
 
 # Optional npm cache directory
 .npm
+
+# Optional eslint cache
+.eslintcache
 
 # Optional REPL history
 .node_repl_history
@@ -46,22 +76,39 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# VS Code
-.vscode/
-*.code-workspace
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
 
-# macOS
-.DS_Store
+# Next.js build output
+.next
 
-# Windows
-Thumbs.db
-ehthumbs.db
+# Nuxt.js build / generate output
+.nuxt
+dist
 
-# IDE
-*.swp
-*.swo
-*~
+# Gatsby files
+.cache/
+public
 
-# Temporary files
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
 tmp/
-temp/ 
+temp/
+
+# Application specific
+cache/
+data/
+keys/
+secrets/
+
+# Test artifacts
+test-results/
+coverage/
+
+# Backup files
+*.backup
+*.bak 
